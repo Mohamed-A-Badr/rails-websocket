@@ -1,0 +1,32 @@
+<h1>Live Random Number</h1>
+<<button id="connect-btn">Connect to WebSocket</button>
+<div id="message"></div>
+
+<script>
+  const socket = new WebSocket("ws://localhost:3000/cable");
+  const messageElement = document.getElementById('message');
+  const connectButton = document.getElementById('connect-btn');
+  
+  connectButton.addEventListener('click', () => {
+    connectButton.disabled = true;
+    messageElement.textContent = 'Connecting...';
+    
+    socket.onopen = () => {
+      messageElement.textContent = 'Connected!';
+    };
+    
+    socket.onmessage = event => {
+      messageElement.textContent = JSON.parse(event.data)['message'];
+    };
+    
+    socket.onclose = () => {
+      messageElement.textContent = 'Disconnected!';
+      connectButton.disabled = false;
+    };
+    
+    socket.onerror = event => {
+      messageElement.textContent = `Error: ${event}`;
+      connectButton.disabled = false;
+    };
+  });
+</script>     
