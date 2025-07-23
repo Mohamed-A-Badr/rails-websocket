@@ -3,6 +3,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
+    image: mohamedbadr119/rails_websocket:latest
     volumes:
       - .:/app
     command: > 
